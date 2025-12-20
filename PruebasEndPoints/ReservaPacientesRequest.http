@@ -1,0 +1,61 @@
+### GET request to example server
+GET http://localhost:3001/reservaPacientes/seleccionarReservados
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/insertarReserva
+Content-Type: application/json
+
+{
+  "nombrePaciente": "Juan",
+  "apellidoPaciente": "Pérez",
+  "rut": "12.345.678-9",
+  "telefono": "+56912345678",
+  "email": "juan.perez@example.com",
+  "fechaInicio": "2025-12-20",
+  "horaInicio": "09:00",
+  "fechaFinalizacion": "2025-12-20",
+  "horaFinalizacion": "10:00",
+  "estadoReserva": "reservada"
+}
+
+
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/eliminarReserva
+Content-Type: application/json
+
+{
+  "id_reserva": 1
+}
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/seleccionarEspecifica
+Content-Type: application/json
+
+{
+  "id_reserva": 17
+}
+
+
+
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/actualizarReservacion
+Content-Type: application/json
+
+{
+  "nombrePaciente": "Juan",
+  "apellidoPaciente": "Pérez",
+  "rut": "12.345.678-9",
+  "telefono": "+56912345678",
+  "email": "juan.perez@example.com",
+  "fechaInicio": "2025-12-20",
+  "horaInicio": "14:00",
+  "fechaFinalizacion": "2025-12-20",
+  "horaFinalizacion": "15:00",
+  "estadoReserva": "confirmada",
+  "id_reserva": 17
+}

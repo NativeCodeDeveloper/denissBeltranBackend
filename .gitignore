@@ -1,0 +1,99 @@
+# Dependencias
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Variables de entorno
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de configuración sensibles
+tokens.json
+token.json
+*tokens.json
+.tokens
+credentials.json
+secrets.json
+*.pem
+*.key
+*.crt
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Archivos temporales
+.tmp/
+tmp/
+temp/
+
+# Uploads y archivos subidos por usuarios
+uploads/*
+!uploads/.gitkeep
+
+# Coverage de tests
+coverage/
+.nyc_output/
+
+# Build y distribución
+dist/
+build/
+.next/
+out/
+
+# Cache
+.cache/
+.eslintcache
+.node_repl_history
+
+# Archivos del sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# PM2
+.pm2/
+pids/
+*.pid
+
+# Certificados SSL locales
+*.pem
+*.key
+*.cert
+
+# Backups de base de datos
+*.sql
+*.sqlite
+*.db
+
+# Archivos de sesión
+sessions/
+

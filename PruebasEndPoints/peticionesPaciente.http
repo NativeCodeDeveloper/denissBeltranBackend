@@ -1,0 +1,70 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=WebStorm
+
+### POST request para pruebas de insercion de pacientes
+POST http://localhost:3001/pacientes/pacientesInsercion
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "rut": "12.345.678-9",
+  "nacimiento": "1990-05-20",
+  "sexo": "Masculino",
+  "prevision_id": 1,
+  "telefono": "+56912345678",
+  "correo": "juan.perez@example.com",
+  "direccion": "Av. Siempre Viva 123",
+  "pais": "Chile"
+}
+
+
+### POST request para encontrar pacinetes por similitud de nombres
+POST http://localhost:3001/pacientes/contieneNombre
+Content-Type: application/json
+
+{
+  "nombre": "nic"
+}
+
+
+
+### POST request para encontrar pacinetes por similitud de rut
+POST http://localhost:3001/pacientes/contieneRut
+Content-Type: application/json
+
+{
+  "rut": "19"
+}
+
+
+
+### POST request para encontrar pacinetes por id_paciente
+POST http://localhost:3001/pacientes/pacientesEspecifico
+Content-Type: application/json
+
+{
+  "id_paciente": "1"
+}
+
+
+
+### POST request para Actualizar pacientes
+POST http://localhost:3001/pacientes/pacientesActualizar
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "rut": "12.345.678-9",
+  "nacimiento": "1990-05-20",
+  "sexo": "Masculino",
+  "prevision_id": 1,
+  "telefono": "+56912345678",
+  "correo": "juan.perez@example.com",
+  "direccion": "Av. Siempre Viva 123",
+  "pais": "Chile",
+  "id_paciente": 1
+}
+

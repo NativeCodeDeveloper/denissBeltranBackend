@@ -1,0 +1,74 @@
+### GET  //FUNCION CONTROLLER PARA SELECCIONAR TODAS LAS FICHAS CLINICAS
+GET http://localhost:3001/ficha/seleccionarTodasLasFichas
+
+
+###### POST // SELECCION DE LAS FICHAS CLINICAS ESPECIFICAS POR id_pacientep
+POST  http://localhost:3001/ficha/seleccionarFichasPaciente
+Content-Type: application/json
+
+{
+  "id_paciente": 16
+}
+
+
+###### POST // ACTUALIZACION DE DATOS DE LA FICHA DE PACIENTES POR POR ID
+POST  http://localhost:3001/ficha/editarFichaPaciente
+Content-Type: application/json
+
+{
+  "anotacionConsulta": "Control mensual realizado sin novedades",
+  "id_ficha": 10
+}
+
+
+
+###### POST // FUNCION PARA INSERTAR UNA NUEVA FICHA CLINICA EN UN PACIEENTE ESPECIFICO (USANDO EL ID PACIENTE)
+POST  http://localhost:3001/ficha/insertarFichaClinica
+Content-Type: application/json
+
+{
+  "id_paciente": 1,
+  "tipoAtencion": "Consulta General",
+  "motivoConsulta": "Dolor de cabeza persistente",
+  "signosVitales": "Signos de pruebas XXXXX",
+  "observaciones": "Paciente presenta síntomas desde hace 3 días",
+  "anotacionConsulta": "Se recomienda reposo y medicación",
+  "anamnesis": "Sin antecedentes relevantes",
+  "diagnostico": "Cefalea tensional",
+  "indicaciones": "Paracetamol 500mg cada 8 horas por 3 días",
+  "archivosAdjuntos": null,
+  "fechaConsulta": "2024-01-15",
+  "consentimientoFirmado": null
+}
+
+
+###### POST ///FUNCION CONTROLLER PARA ELIMINAR FICHA CLINICA DE MANERA LOGICA DEJANDOLA EN ESTADO CERO USANDO ID DE PACIENTE E ID DE LA FICHA
+POST  http://localhost:3001/ficha/eliminarFichaClinica
+Content-Type: application/json
+
+{
+  "id_ficha": 10
+}
+
+
+
+###### POST // SELECCIONAR LAS FICHAS CLINICAS POR ID DE LA FICHA Y POR EL ID DEL PACIENTE
+POST  http://localhost:3001/ficha/seleccionarFichaEspecificaPorId
+Content-Type: application/json
+
+{
+  "id_paciente": 16,
+  "id_ficha": 9
+}
+
+
+
+
+
+###### POST // SELECCIONAR LAS FICHAS CLINICAS POR ID DE LA FICHA Y POR EL ID DEL PACIENTE
+POST  http://localhost:3001/ficha/seleccionarFichaID
+Content-Type: application/json
+
+{
+  "id_ficha": 10
+}
