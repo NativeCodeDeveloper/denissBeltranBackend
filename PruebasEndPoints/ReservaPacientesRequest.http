@@ -21,6 +21,8 @@ Content-Type: application/json
 
 
 
+
+
 ### GET request to example server
 POST http://localhost:3001/reservaPacientes/eliminarReserva
 Content-Type: application/json
@@ -59,3 +61,78 @@ Content-Type: application/json
   "estadoReserva": "confirmada",
   "id_reserva": 17
 }
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/seleccionarNombre
+Content-Type: application/json
+
+{
+  "nombrePaciente": "ro",
+  "id_reserva": 19
+}
+
+
+
+
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/seleccionarRut
+Content-Type: application/json
+
+{
+  "rut": "12"
+}
+
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/buscarEntreFechas
+Content-Type: application/json
+
+{
+  "fechaInicio": "2025-12-20",
+  "fechaFinalizacion": "2025-12-20"
+}
+
+
+
+
+
+
+
+### GET request to example server
+POST http://localhost:3001/reservaPacientes/actualizarEstado
+Content-Type: application/json
+
+{
+  "estadoReserva": "Anulada",
+  "id_reserva": 19
+}
+
+
+
+### POST request to example server
+POST http://localhost:3001/reservaPacientes/seleccionarSegunEstado
+Content-Type: application/json
+
+{
+  "estadoReserva": "Anulada"
+}
+
+
+
+
+
+### POST request to example server
+POST http://localhost:3001/reservaPacientes/validar
+Content-Type: application/json
+
+{
+  "fechaInicio": "2025-12-20",
+  "horaInicio": "09:00",
+  "fechaFinalizacion": "2025-12-20",
+  "horaFinalizacion": "10:00"
+}
+

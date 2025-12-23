@@ -1,0 +1,17 @@
+### POST request to example server
+POST http://localhost:3001/pagosMercadoPago/create-order
+Content-Type: application/json
+
+{
+  "nombrePaciente": "Juan",
+  "apellidoPaciente": "Pérez",
+  "rut": "12.345.678-9",
+  "telefono": "+56912345678",
+  "email": "juan.perez@example.com",
+  "fechaInicio": "2025-12-30",
+  "horaInicio": "09:30",
+  "fechaFinalizacion": "2025-12-30",
+  "horaFinalizacion": "10:00",
+  "estadoReserva": "PENDIENTE"
+}
+

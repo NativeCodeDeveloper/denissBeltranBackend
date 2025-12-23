@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import mercadopago, * as mpNamed from 'mercadopago';
 import PedidoComprasController from "../controller/PedidoComprasController.js";
 import PedidoCompras from "../model/PedidoCompras.js";
+import ReservaPacientes from "../model/ReservaPacientes.js";
 
 dotenv.config();
 
@@ -11,10 +12,24 @@ const BACKEND = process.env.BACKEND_URL;
 //SE DEFINE LA FUNCION CREATE ORDER ESTA FUNCION PERMITE CREAR LA ORDEN DE PAGO
 export const createOrder = async (req, res) => {
     try {
-        const {comprador = {}} = req.body;
-        console.log(comprador);
+
+        const {
+            nombrePaciente,
+            apellidoPaciente,
+            rut,
+            telefono,
+            email,
+            fechaInicio,
+            horaInicio,
+            fechaFinalizacion,
+            horaFinalizacion,
+            estadoReserva
+        } = req.body;
+
+        console.log(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva);
 
         const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
+
         if (!ACCESS_TOKEN) {
             return res.status(500).json({error: 'No hay access token configurado en el servidor'});
         }
@@ -22,7 +37,7 @@ export const createOrder = async (req, res) => {
         const items = [{
             title: "Cita Psicologia / PS. Deniss Beltran Varela",
             quantity: 1,
-            unit_price: parseFloat(comprador.totalPagado),
+            unit_price: 16500,
             currency_id: "CLP"
         }];
 
@@ -35,12 +50,9 @@ export const createOrder = async (req, res) => {
                 pending: `${BACKEND}/pagosMercadoPago/pending`,
             },
             metadata: {
-                nombre_comprador: comprador.nombre_comprador,
-                email: comprador.email_Comprador,
-                telefono: comprador.telefono_comprador,
-                direccion: comprador.direccion_despacho,
-                comuna: comprador.comuna,
-                region: comprador.regionPais
+                nombre_comprador: nombrePaciente,
+                email: email,
+                telefono: telefono
             },
             auto_return: "approved",
             notification_url: `${BACKEND}/pagosMercadoPago/notificacionPago`,
@@ -58,45 +70,26 @@ export const createOrder = async (req, res) => {
 
         if (!resultBody) {
             console.error('No se pudo crear la preferencia. Detalles');
-            return res.status(500).json({error: 'Error al crear la orden de pago'});
+            return res.status(500).json({message: 'error'});
 
         } else {
 
-            const nombre_comprador = comprador.nombre_comprador;
-            const apellidosComprador = comprador.apellidosComprador;
-            const telefono_comprador = comprador.telefono_comprador;
-            const email_Comprador = comprador.email_Comprador;
-            const identificacion_comprador = comprador.identificacion_comprador;
-            const direccion_despacho = comprador.direccion_despacho;
-            const comuna = comprador.comuna;
-            const regionPais = comprador.regionPais;
-            const comentarios = comprador.comentarios;
-            const totalPagado = comprador.totalPagado;
             const preference_id = resultBody.id;
 
-            let id_pedido;
+            const reservaPacienteClass = new ReservaPacientes();
+            const resultadoInsert = await reservaPacienteClass.insertarReservaPacienteBackend(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva, preference_id);
 
-            try {
-                const fecha_pedido = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            if (resultadoInsert.affectedRows > 0) {
 
-                const pedidoComprasModel = new PedidoCompras();
-                const resultadoInsert = await pedidoComprasModel.insertarPedidoCompra(fecha_pedido, nombre_comprador, apellidosComprador, telefono_comprador, email_Comprador, identificacion_comprador, direccion_despacho, comuna, regionPais, comentarios, totalPagado, preference_id);
                 return res.status(200).json({
                     id: resultBody.id,
                     init_point: resultBody.init_point,
                     sandbox_init_point: resultBody.sandbox_init_point,
                 });
 
-            } catch (insertErr) {
-                console.error('Error insertando pedido arrojado en el Try catch');
-                return res.status(200).json({
-                    id: resultBody.id,
-                    init_point: resultBody.init_point,
-                    sandbox_init_point: resultBody.sandbox_init_point,
-                    insert_error: true
-                });
+            } else {
+                return res.status(200).json({message: false})
             }
-
         }
 
     } catch (error) {
@@ -218,15 +211,14 @@ export const recibirPago = async (req, res) => {
             //SE DEBE CONSIDERAR SI O SI EL ESTADO DE PAGO A APROVED PARA PRODUCCION
 
             try {
-                const instanciaPedidoCompra = new PedidoCompras();
-                const resultadoQuery = await instanciaPedidoCompra.cambiarEstadoaPagado(preference_id)
+                const reservaPacientesClass = new ReservaPacientes();
+                const resultadoQuery = await reservaPacientesClass.cambiarReservaPagada(preference_id)
                 if (resultadoQuery.affectedRows > 0) {
 
 
                     console.log(" --------> SE HA CAMBIADO EL ESTADO A 1 (PAGADO / PENDIENTE ENVIO)");
                     return res.status(200).json({received: true});
-                    console.log('')
-                    console.log('')
+           
 
                 } else {
 

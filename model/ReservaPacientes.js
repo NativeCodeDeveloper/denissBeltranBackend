@@ -33,6 +33,42 @@ export default class ReservaPacientes {
     }
 
 
+    async cambiarReservaPagada(preference_id) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = "UPDATE reservaPacientes SET estadoReserva = 'reservada'  WHERE preference_id = ?";
+            const params = [preference_id];
+            const resultado = await conexion.ejecutarQuery(query, params);
+            if (resultado) {
+                return resultado;
+            } else {
+                return console.error('Ha habido un problema al ejecutar la consulta desde model en ReservaPacientes.js , NO se ha podido cambiar el estado correctamente a pagado ')
+            }
+        } catch (e) {
+            console.log('Problema encontrado a nivel del model en ReservaPacientes.js :  ' + e);
+            throw new Error('No se ha podido actualizar el pago desde la clase del modelo ReservaPacientes.js :  ' + e);
+        }
+    }
+
+
+    //METODO PARA SELECCIONAR TODAS LAS CITAS MEDICAS SEGUN ESTADO DE RESERVA INGRESADO
+    async seleccionarReservaEstado(estadoReserva) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = "SELECT * FROM reservaPacientes WHERE estadoReserva = ? AND estadoPeticion <> 0"
+            const param = [estadoReserva]
+            const resultadoQuery = await conexion.ejecutarQuery(query, param);
+
+            if (resultadoQuery) {
+                return resultadoQuery;
+            }
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+    }
+
+
     //METODO PARA ACTUALZIAR NUEVAS CITAS MEDICAS
     async actualizarReserva(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva, id_reserva) {
         try {
@@ -92,7 +128,7 @@ export default class ReservaPacientes {
     async seleccionarFichasReservadas() {
         try {
             const conexion = DataBase.getInstance();
-            const query = "SELECT * FROM reservaPacientes WHERE estadoReserva = 'reservada' AND estadoPeticion <> 0"
+            const query = "SELECT * FROM reservaPacientes WHERE estadoPeticion <> 0"
             const resultadoQuery = await conexion.ejecutarQuery(query);
             if (resultadoQuery) {
                 return resultadoQuery;
@@ -138,5 +174,97 @@ export default class ReservaPacientes {
 
         const cnt = Array.isArray(filas) ? filas[0].cnt : filas.cnt;
         return cnt === 0; // true = disponible
+    }
+
+
+    async seleccionarSimilitudNombre(nombrePaciente) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = 'SELECT * FROM reservaPacientes WHERE nombrePaciente LIKE ? AND estadoPeticion <> 0 ';
+            const param = ['%' + nombrePaciente + '%'];
+
+            const resultadoQuery = await conexion.ejecutarQuery(query, param);
+
+            if (resultadoQuery) {
+                return resultadoQuery;
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
+    async seleccionarSimilitudRut(rut) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = 'SELECT * FROM reservaPacientes WHERE rut LIKE ? AND estadoPeticion <> 0 ';
+            const param = ['%' + rut + '%'];
+
+            const resultadoQuery = await conexion.ejecutarQuery(query, param);
+
+            if (resultadoQuery) {
+                return resultadoQuery;
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
+    async seleccionarEntreFechas(fechaInicio, fechaFinalizacion) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = 'SELECT * FROM reservaPacientes WHERE fechaInicio BETWEEN  ? AND ? AND estadoPeticion <> 0 ';
+            const param = [fechaInicio, fechaFinalizacion];
+
+            const resultadoQuery = await conexion.ejecutarQuery(query, param);
+
+            if (resultadoQuery) {
+                return resultadoQuery;
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
+    async actualizarEstado(estadoReserva, id_reserva) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = "UPDATE reservaPacientes SET estadoReserva = ? WHERE id_reserva = ?"
+            const params = [estadoReserva, id_reserva];
+
+            const resultadoQuery = await conexion.ejecutarQuery(query, params);
+            if (resultadoQuery) {
+
+                return resultadoQuery;
+            }
+            return null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    //METODO PARA INSERTAR NUEVAS CITAS MEDICAS DESDE METODOS INTERNOS DEL BACKEND COMO MERCADO PAGO
+    async insertarReservaPacienteBackend(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva, preference_id) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = 'INSERT INTO reservaPacientes(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio,fechaFinalizacion, horaFinalizacion, estadoReserva, preference_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+            const param = [nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva, preference_id];
+
+            const resultadoQuery = await conexion.ejecutarQuery(query, param);
+            if (resultadoQuery) {
+                return resultadoQuery;
+            }
+        } catch (e) {
+            throw new Error(e)
+        }
     }
 }

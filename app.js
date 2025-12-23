@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import mercadoPagoRouter from "./views/mercadoPagoRoutes.js";
 import pedidosRoutes from "./views/pedidosRoutes.js";
 import reservaPacienteRoutes from "./views/reservaPacienteRoutes.js";
+import correoRoutes from "./views/correosRoutes.js";
 
 // Cargar variables de entorno PRIMERO
 dotenv.config();
@@ -75,6 +76,7 @@ app.get("/config", (req, res) => {
 });
 
 app.use("/titulo", tituloRoutes);
+app.use("/correo", correoRoutes);
 app.use("/reservaPacientes", reservaPacienteRoutes);
 app.use("/pagosMercadoPago", mercadoPagoRouter);
 app.use("/pedidos", pedidosRoutes);
