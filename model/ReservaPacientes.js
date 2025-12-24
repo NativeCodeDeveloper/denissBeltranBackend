@@ -90,7 +90,7 @@ export default class ReservaPacientes {
     async eliminarReservaPaciente(id_reserva) {
         try {
             const conexion = DataBase.getInstance();
-            const query = "UPDATE reservaPacientes SET estadoPeticion = 0 where id_reserva = ?";
+            const query = "DELETE FROM reservaPacientes WHERE id_reserva = ?";
             const param = [id_reserva];
 
             const resultadoQuery = await conexion.ejecutarQuery(query, param);
@@ -266,5 +266,25 @@ export default class ReservaPacientes {
         } catch (e) {
             throw new Error(e)
         }
+    }
+
+
+    //METODO PARA SELECCIONAR TODAS LAS CITAS MEDICAS por preference_id
+    async seleccionarFichasReservadasPreference(preference_id) {
+        try {
+            const conexion = DataBase.getInstance();
+            const query = "SELECT * FROM reservaPacientes WHERE preference_id = ? AND estadoPeticion <> 0"
+            const param = [preference_id];
+            const resultadoQuery = await conexion.ejecutarQuery(query, param);
+
+            if (resultadoQuery) {
+                return resultadoQuery;
+            }
+
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+
     }
 }

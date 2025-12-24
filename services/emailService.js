@@ -12,12 +12,16 @@ const transporter = nodemailer.createTransport({
 
 export async function enviarCorreoComprobante({correoDestino, nombre}) {
     const mailOptions = {
-        from: `"Tu Tienda" <${process.env.EMAIL_USER}>`,
+        from: `<${process.env.EMAIL_USER}>`,
         to: correoDestino,
-        subject: "Gracias por tu compra",
+        subject: "Gracias por Confiar en Nosotros",
         html: `
-      <h1>Hola ${nombre}</h1>
-      <p>Gracias por tu compra. Estamos procesando tu pedido.</p>
+      <h1>Estimado/a ${nombre}</h1>
+      <p>
+      Su reserva ha sido realizada con éxito. 
+
+Si desea modificar la fecha u hora de su cita, por favor contáctenos a través de nuestros canales habituales para realizar el reagendamiento correspondiente.
+</p>
     `,
     };
 

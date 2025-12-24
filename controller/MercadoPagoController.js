@@ -3,6 +3,7 @@ import mercadopago, * as mpNamed from 'mercadopago';
 import PedidoComprasController from "../controller/PedidoComprasController.js";
 import PedidoCompras from "../model/PedidoCompras.js";
 import ReservaPacientes from "../model/ReservaPacientes.js";
+import {enviarCorreoComprobante} from "../services/emailService.js";
 
 dotenv.config();
 
@@ -210,26 +211,34 @@ export const recibirPago = async (req, res) => {
 
             //SE DEBE CONSIDERAR SI O SI EL ESTADO DE PAGO A APROVED PARA PRODUCCION
 
-            try {
-                const reservaPacientesClass = new ReservaPacientes();
-                const resultadoQuery = await reservaPacientesClass.cambiarReservaPagada(preference_id)
-                if (resultadoQuery.affectedRows > 0) {
+            const reservaPacientesClass = new ReservaPacientes();
 
+
+            try {
+
+                const resultadoQuery = await reservaPacientesClass.cambiarReservaPagada(preference_id)
+                const dataCliente = await reservaPacientesClass.seleccionarFichasReservadasPreference(preference_id)
+
+
+                if (Array.isArray(dataCliente)) {
+                    
+                    let correoDestino = dataCliente.email;
+                    let nombre = dataCliente.nombrePaciente;
+
+                    await enviarCorreoComprobante({
+                        correoDestino,
+                        nombre
+                    });
+
+                }
+
+
+                if (resultadoQuery.affectedRows > 0) {
 
                     console.log(" --------> SE HA CAMBIADO EL ESTADO A 1 (PAGADO / PENDIENTE ENVIO)");
                     return res.status(200).json({received: true});
-           
-
-                } else {
-
-                    console.log('')
-                    console.log('')
-                    console.log("--------> NO SE HA CAMBIADO EL ESTADO. NO HAY SIMILITUDES CON EL  --> preference_id <-- :  " + preference_id);
-                    console.log('')
-                    console.log('')
-                    return res.status(200).json({received: true});
-
                 }
+
 
             } catch (error) {
                 return console.error('Error al validar preference_id:', error);
