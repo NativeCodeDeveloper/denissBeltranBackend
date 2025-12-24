@@ -91,7 +91,8 @@ app.use('/reservas', reservasRoutes);
 app.use('/upload', uploadRoutes);
 app.use("/api/cloudinary", cloudinaryRoutes);
 
-// app.set("trust proxy", 1); // Descomenta en producción detrás de proxy (para cookies 'secure')
-app.listen(3001, () => {
-    console.log('http://localhost:3001/')
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`BACKEND CORRIENDO SIN PROBLEMAS EN --->  http://localhost:${PORT}`);
 })
