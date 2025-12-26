@@ -24,10 +24,11 @@ export const createOrder = async (req, res) => {
             horaInicio,
             fechaFinalizacion,
             horaFinalizacion,
-            estadoReserva
+            estadoReserva,
+            totalPago
         } = req.body;
 
-        console.log(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva);
+        console.log(nombrePaciente, apellidoPaciente, rut, telefono, email, fechaInicio, horaInicio, fechaFinalizacion, horaFinalizacion, estadoReserva, totalPago);
 
         const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 
@@ -38,7 +39,7 @@ export const createOrder = async (req, res) => {
         const items = [{
             title: "Cita Psicologia / PS. Deniss Beltran Varela",
             quantity: 1,
-            unit_price: 16500,
+            unit_price: totalPago,
             currency_id: "CLP"
         }];
 
@@ -221,7 +222,7 @@ export const recibirPago = async (req, res) => {
 
 
                 if (Array.isArray(dataCliente)) {
-                    
+
                     let correoDestino = dataCliente.email;
                     let nombre = dataCliente.nombrePaciente;
 
